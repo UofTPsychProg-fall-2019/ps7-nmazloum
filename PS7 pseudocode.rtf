@@ -100,25 +100,25 @@ df_ViewCond_CI_O <- summarySEwithin()\
 \
 \
 #BetweenSubjErrorBars\
-df_ViewCond_btwCI_YA <- summarySE()\
+df_ViewCond_btwCI_YA <- summarySE()
 \
-#compute accuracy and median RT\
+#compute accuracy and median RT
 \
-avg.sbj <- data %>%\
+avg.sbj <- data %>%
   summarise(acc=mean(correct),mrt=median(rt)) # compute accuracy and median RT \
 avg.grp <- avg.sbj %>%\
   summarise(acc=mean(acc),mrt=mean(mrt)) # compute summary stats\
 \
-#plot\
+#plot
 \
 plot(avg.grp$expdur, avg.grp$acc, col=avg.grp$iconset)\
 \
 \
 \
-#plot Younger and Older together #filter out for \'93fixed\'94 condition\
+#plot Younger and Older together #filter out for fixed condition
 \
 \
 plot_Y_O <- dfY_ViewCondXBlock_CI %>% dplyr::filter(ViewCond=="fixed") %>%    \
-ggplot(aes(x=Block,y=Fixations, group=1)) +geom_line() +\'85\
+ggplot(aes(x=Block,y=Fixations, group=1)) +geom_line() +...
 \
 \
