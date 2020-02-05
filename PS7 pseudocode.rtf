@@ -1,0 +1,126 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf610
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww20840\viewh12540\viewkind0
+\deftab720
+\pard\pardeftab720\fi720\ri0\sl480\slmult1\partightenfactor0
+
+\f0\fs24 \cf0 I will be programming my experiment using R Studio. My study will examine the relationship between eye movement repetition effect and cognitive decline. Eye movement measures will be monitored in a group of healthy older adults with varying levels of cognitive abilities and in a group of healthy younger adults while they study single faces across multiple blocks. Eye movement measures will be monitored in two phases: a study phase and a surprise test phase, while participants view single faces across multiple blocks. Each face may be displayed from the same viewpoint (\'93fixed\'94) in both phases or from a different viewpoint across the blocks in each phase (\'93variable\'94). I will be recording eye movement fixation count, median reaction time, and accuracy of response. Data will be read into R Studio using read.delim from a text file produced by DataViewer. Next, data will be wrangled using functions found in reshape2 and tidyr. More specifically, I will format my data using melt, spread, and gather which are all part of reshape2 and tidyr. Furthermore, data will be plotted using ggplot and gridExtra. Lastly, error bars will be calculated using SummarySEwithin and SummarySEbetween, which are functions found in rmisc.\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+\
+\
+library(ggplot2)\
+library(reshape2)\
+library(Rmisc)\
+library(gridExtra)\
+library(tidyr)\
+\
+#Y= Younger adult\
+#O= Older adult\
+\
+#read in study files for younger and older adults and assign them to a separate data frame for each age group\
+\
+\
+#Fixation Count\
+\
+dfY_wide <-read.delim("~/Dropbox/Papers/")\
+dfO_wide <-read.delim("~/Dropbox/Papers/")\
+\
+\
+# Treat subject ID as a factor\
+dfY_wide$subject <- factor(dfY_wide$subj)\
+dfO_wide$subject <- factor(dfO_wide$subj)\
+\
+#data frames for younger and older adult data\
+\
+#melt transforms data from wide to long\
+\
+dfY_long <- melt(dfY_wide, \
+                 id.vars = "subject",\
+                 measure.vars = c("Fixed1","Fixed2","Fixed3","Fixed4","Fixed5","Variable1","Variable2","Variable3","Variable4","Variable5"),\
+                 variable.name = "condition")\
+\
+dfO_long <- melt(dfO_wide,\
+                  id.vars = "subject",\
+                  measure.vars = c("Fixed1","Fixed2","Fixed3","Fixed4","Fixed5","Variable1","Variable2","Variable3","Variable4","Variable5"),\
+                  variable.name = "condition")\
+\
+names(dfY_long)[names(dfY_long)=="value"] <- "Fixations" #changes the label "value" to "fixations" \
+names(dfO_long)[names(dfO_long)=="value"] <- "Fixations"\
+\
+#ViewingCondition\
+\
+dfY_long$ViewCond <- NA\
+dfY_long$ViewCond[grepl("^Fix", dfY_long$condition)] <- "fixed"\
+dfY_long$ViewCond[grepl("^Var", dfY_long$condition)] <- "variable"\
+dfY_long$ViewCond <- factor(dfY_long$ViewCond, levels=c("fixed","variable"))\
+\
+dfO_long$ViewCond <- NA\
+dfO_long$ViewCond[grepl("^Fix", dfO_long$condition)] <- "fixed"\
+dfO_long$ViewCond[grepl("^Var", dfO_long$condition)] <- "variable"\
+dfO_long$ViewCond <- factor(dfO_long$ViewCond, levels=c("fixed","variable"))\
+\
+#FiveBlocks\
+\
+dfY_long$Block <- NA\
+dfY_long$Block[grepl("1$", dfY_long$condition)] <- "1"\
+dfY_long$Block[grepl("2$", dfY_long$condition)] <- "2"\
+dfY_long$Block[grepl("3$", dfY_long$condition)] <- "3"\
+dfY_long$Block[grepl("4$", dfY_long$condition)] <- "4"\
+dfY_long$Block[grepl("5$", dfY_long$condition)] <- "5"\
+dfY_long$Block <- factor(dfY_long$Block, levels=c("1","2","3","4","5"))\
+dfY_long$condition <- NULL\
+\
+dfO_long$Block <- NA\
+dfO_long$Block[grepl("1$", dfO_long$condition)] <- "1"\
+dfO_long$Block[grepl("2$", dfO_long$condition)] <- "2"\
+dfO_long$Block[grepl("3$", dfO_long$condition)] <- "3"\
+dfO_long$Block[grepl("4$", dfO_long$condition)] <- "4"\
+dfO_long$Block[grepl("5$", dfO_long$condition)] <- "5"\
+dfO_long$Block <- factor(dfO_long$Block, levels=c("1","2","3","4","5"))\
+dfO_long$condition <- NULL\
+\
+\
+\
+#ConfidenceIntervals\
+\
+dfY_ViewCondXBlock_CI <- summarySEwithin()\
+\
+\
+dfO_ViewCondXBlock_CI <- summarySEwithin()\
+\
+\
+#WithinSubjErrorBars\
+\
+df_ViewCond_WithinCI_YA <- summarySEwithin()\
+\
+\
+df_ViewCond_CI_O <- summarySEwithin()\
+\
+\
+#BetweenSubjErrorBars\
+df_ViewCond_btwCI_YA <- summarySE()\
+\
+#compute accuracy and median RT\
+\
+avg.sbj <- data %>%\
+  summarise(acc=mean(correct),mrt=median(rt)) # compute accuracy and median RT \
+avg.grp <- avg.sbj %>%\
+  summarise(acc=mean(acc),mrt=mean(mrt)) # compute summary stats\
+\
+#plot\
+\
+plot(avg.grp$expdur, avg.grp$acc, col=avg.grp$iconset)\
+\
+\
+\
+#plot Younger and Older together #filter out for \'93fixed\'94 condition\
+\
+\
+plot_Y_O <- dfY_ViewCondXBlock_CI %>% dplyr::filter(ViewCond=="fixed") %>%    \
+ggplot(aes(x=Block,y=Fixations, group=1)) +geom_line() +\'85\
+\
+\
+}
