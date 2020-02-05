@@ -1,15 +1,14 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf610
-{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\margl1440\margr1440\vieww20840\viewh12540\viewkind0
-\deftab720
-\pard\pardeftab720\fi720\ri0\sl480\slmult1\partightenfactor0
+I will be programming my experiment using R Studio. 
+My study will examine the relationship between eye movement repetition effect and cognitive decline. 
+Eye movement measures will be monitored in a group of healthy older adults with varying levels of cognitive abilities and in a group of healthy younger adults while they study single faces across multiple blocks. 
+Eye movement measures will be monitored in two phases: a study phase and a surprise test phase, while participants view single faces across multiple blocks.
+Each face may be displayed from the same viewpoint (“fixed”) in both phases or from a different viewpoint across the blocks in each phase (“variable”). 
+I will be recording eye movement fixation count, median reaction time, and accuracy of response.
+Data will be read into R Studio using read.delim from a text file produced by DataViewer. 
+Next, data will be wrangled using functions found in reshape2 and tidyr. 
+More specifically, I will format my data using melt, spread, and gather which are all part of reshape2 and tidyr. 
+Furthermore, data will be plotted using ggplot and gridExtra. Lastly, error bars will be calculated using SummarySEwithin and SummarySEbetween, which are functions found in rmisc.
 
-\f0\fs24 \cf0 I will be programming my experiment using R Studio. My study will examine the relationship between eye movement repetition effect and cognitive decline. Eye movement measures will be monitored in a group of healthy older adults with varying levels of cognitive abilities and in a group of healthy younger adults while they study single faces across multiple blocks. Eye movement measures will be monitored in two phases: a study phase and a surprise test phase, while participants view single faces across multiple blocks. Each face may be displayed from the same viewpoint (\'93fixed\'94) in both phases or from a different viewpoint across the blocks in each phase (\'93variable\'94). I will be recording eye movement fixation count, median reaction time, and accuracy of response. Data will be read into R Studio using read.delim from a text file produced by DataViewer. Next, data will be wrangled using functions found in reshape2 and tidyr. More specifically, I will format my data using melt, spread, and gather which are all part of reshape2 and tidyr. Furthermore, data will be plotted using ggplot and gridExtra. Lastly, error bars will be calculated using SummarySEwithin and SummarySEbetween, which are functions found in rmisc.\
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-\cf0 \
-\
 \
 library(ggplot2)\
 library(reshape2)\
